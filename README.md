@@ -11,4 +11,4 @@ CREATE TABLE [dbo].[MemoTable] (
     [title] NVARCHAR (50)  NULL,
     [body]  NVARCHAR (MAX) NULL,
     PRIMARY KEY CLUSTERED ([date] ASC)
-);
+)
