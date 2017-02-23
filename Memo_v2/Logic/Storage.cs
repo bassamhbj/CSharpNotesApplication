@@ -7,10 +7,10 @@ using System.IO;
 using System.Diagnostics;
 
 namespace Memo_v2.Logic {
-    class DBXMLPath {
-        string path = "";
+    public abstract class Storage {
+        private string path = "";
 
-        public string DBPath {
+        protected string DBPath {
             set { path = value; }
             get {
                 getFilePathDB();
@@ -18,7 +18,7 @@ namespace Memo_v2.Logic {
             }
         }
 
-        public string XMLPath {
+        protected string XMLPath {
             set { path = value; }
             get {
                 getFilePathXML();
@@ -27,14 +27,17 @@ namespace Memo_v2.Logic {
         }
 
         private void getFilePathDB() {
-            if (path.Equals("")) {
-                var directpryPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
 
-                var dataBaseFilePath = Path.Combine(directpryPath, @"memoDB.mdf");
+            // Check if works properly
+
+            if (path.Equals("")) {
+                var directoryPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+
+                var dataBaseFilePath = Path.Combine(directoryPath, @"memoDB2.mdf");
 
                 Debug.Print(dataBaseFilePath);
 
-                path = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={0}", new Uri(dataBaseFilePath).LocalPath);             
+                path = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={0}", new Uri(dataBaseFilePath).LocalPath);
             }
         }
 
@@ -47,5 +50,13 @@ namespace Memo_v2.Logic {
                 path = new Uri(dataBaseFilePath).LocalPath;
             }
         }
+
+        public abstract List<Memo> loadMemo();
+
+        public abstract void newMemo(string title, string body);
+
+        public abstract void deleteMemo(int index);
+
+        public abstract void autoSave(string text, DateTime time, int index);
     }
 }

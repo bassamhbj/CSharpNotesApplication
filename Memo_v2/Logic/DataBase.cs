@@ -7,14 +7,13 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace Memo_v2.Logic {
-    public class DataBase {
+    public class DataBase : Storage{
         private List<Memo> memoList;
-        private DBXMLPath dbPATH = new DBXMLPath();
 
         // Arreglar SQLTransaction
 
-        public List<Memo> loadMemo() {
-            using (SqlConnection cn = new SqlConnection(dbPATH.DBPath)) {
+        public override List<Memo> loadMemo() {
+            using (SqlConnection cn = new SqlConnection(DBPath)) {
                 string sql = "SELECT * FROM dbo.MemoTable";
 
                 SqlCommand cmd = new SqlCommand(sql, cn);
@@ -48,8 +47,8 @@ namespace Memo_v2.Logic {
             return memoList;
         }
 
-        public void newMemo(string title, string body) {
-            using (SqlConnection cn = new SqlConnection(dbPATH.DBPath)) {
+        public override void newMemo(string title, string body) {
+            using (SqlConnection cn = new SqlConnection(DBPath)) {
                 string sql = "INSERT INTO MemoTable(date, title, body) VALUES(@date, @title, @body)";
 
                 cn.Open();
@@ -71,8 +70,8 @@ namespace Memo_v2.Logic {
             }
         }
 
-        public void deleteMemo(int index) {
-            using (SqlConnection cn = new SqlConnection(dbPATH.DBPath)) {
+        public override void deleteMemo(int index) {
+            using (SqlConnection cn = new SqlConnection(DBPath)) {
                 string sql = "DELETE FROM dbo.MemoTable WHERE date = @date";
 
                 SqlCommand cmd = new SqlCommand(sql, cn);
@@ -91,8 +90,8 @@ namespace Memo_v2.Logic {
             }
         }
 
-        public void autoSave(string text, DateTime time, int index) {
-            using (SqlConnection cn = new SqlConnection(dbPATH.DBPath)) {
+        public override void autoSave(string text, DateTime time, int index) {
+            using (SqlConnection cn = new SqlConnection(DBPath)) {
                 string sql = "UPDATE MemoTable SET body = @body where date = @date";
 
                 SqlCommand cmd = new SqlCommand(sql, cn);

@@ -11,13 +11,16 @@ namespace Memo_v2.Model {
         Observer obs;
         private List<Memo> memoList;
         private DataBase dataBase;
+        private XMLManager xml;
 
         public Modelo() {
             dataBase = new DataBase();
+            xml = new XMLManager();
         }
 
         public void loadMemo() {
             memoList = dataBase.loadMemo();
+            //memoList = xml.loadMemo();
             obs.onLoadMemo(memoList);
         }
 
@@ -31,16 +34,18 @@ namespace Memo_v2.Model {
 
         public void newMemo(string title, string body) {
             dataBase.newMemo(title, body);
+            //xml.newMemo(title, body);
             obs.onNewMemoCreated();
         }
 
         public void autoSaveMemo(string text, DateTime time, int index) {
             dataBase.autoSave(text, time, index);
+            //xml.autoSave(text, time, index);
         }
 
         public void deleteMemo(int index) {
             dataBase.deleteMemo(index);
-            obs.onMemoDeleted();
+            //obs.onMemoDeleted();
         }
     }
 }
